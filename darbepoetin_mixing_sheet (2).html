@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RG1122310 / DIVI — Darbepoetin IV or SQ Mixing Instructions</title>
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --line:#333;
+    --accent:#0b5394;
+    --warn-bg:#fff3cd;
+    --warn-border:#e0a800;
+    --err-bg:#fde2e2;
+    --err-border:#c0392b;
+    --ok-bg:#e8f5e9;
+    --ok-border:#2e7d32;
+    --box-bg:#f5f7fa;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:"Segoe UI",Arial,Helvetica,sans-serif;
+    color:var(--ink);
+    max-width:900px;
+    margin:0 auto;
+    padding:20px 26px 40px;
+    line-height:1.35;
+    font-size:13.5px;
+  }
+  h1{font-size:16px;margin:0 0 2px;text-align:center;}
+  h2{font-size:13.5px;margin:0 0 10px;text-align:center;font-weight:normal;color:#444;}
+  .subtitle{text-align:center;font-size:11px;color:#666;margin-bottom:14px;}
+
+  .toolbar{
+    display:flex; gap:10px; justify-content:center; margin-bottom:16px; flex-wrap:wrap;
+  }
+  button{
+    font-size:13px; padding:7px 15px; border-radius:6px; border:1px solid var(--accent);
+    background:var(--accent); color:#fff; cursor:pointer;
+  }
+  button.secondary{ background:#fff; color:var(--accent); }
+  button:hover{opacity:0.9;}
+  a.reflink{
+    display:inline-flex; align-items:center; gap:4px; font-size:12.5px; color:var(--accent);
+    text-decoration:none; border:1px solid var(--accent); border-radius:6px; padding:6px 12px;
+  }
+  a.reflink:hover{ background:#eaf2fb; }
+
+  fieldset{
+    border:1px solid #bbb; border-radius:8px; margin-bottom:12px; padding:9px 14px;
+  }
+  legend{font-weight:600; padding:0 6px; color:var(--accent); font-size:12.5px;}
+
+  .row{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px;}
+  .field{display:flex; flex-direction:column; flex:1; min-width:140px;}
+  .field label{font-size:11.5px; font-weight:600; margin-bottom:2px;}
+  .field input, .field select{
+    padding:5px 7px; border:1px solid #999; border-radius:4px; font-size:13.5px;
+  }
+  .field .hint{font-size:10.5px; color:#666; margin-top:2px;}
+
+  .conc-badge{
+    display:inline-block; background:var(--accent); color:#fff; font-weight:700;
+    font-size:12px; border-radius:5px; padding:3px 9px; margin-top:4px;
+    letter-spacing:0.2px;
+  }
+  .conc-badge.pending{ background:#999; }
+  .conc-badge-inline{
+    background:var(--accent); color:#fff; font-weight:700; font-size:12px;
+    border-radius:5px; padding:1px 7px; display:inline-block;
+  }
+
+  .calc-box{
+    background:var(--box-bg); border:1px solid #ccd3da; border-radius:8px; padding:10px 14px; margin:6px 0;
+  }
+  .calc-line{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:4px 0; border-bottom:1px dashed #d3d9df;
+  }
+  .calc-line:last-child{border-bottom:none;}
+  .calc-line .label{font-size:12.5px;}
+  .calc-line .value{
+    font-weight:700; font-size:14px; min-width:100px; text-align:right;
+    display:flex; align-items:center; gap:6px; justify-content:flex-end;
+  }
+  .calc-line .value input{
+    width:76px; text-align:right; font-weight:700; font-size:13.5px;
+    border:1px solid #999; border-radius:4px; padding:3px 5px; background:#fff;
+  }
+  .unit{font-weight:400; font-size:11.5px; color:#555;}
+  .boxtag{
+    display:inline-block; background:var(--accent); color:#fff; font-size:9.5px;
+    font-weight:700; border-radius:3px; padding:1px 5px; margin-left:5px;
+  }
+
+  .alert{ border-radius:6px; padding:6px 10px; font-size:12px; margin:6px 0; display:none; }
+  .alert.show{display:block;}
+  .alert.warn{background:var(--warn-bg); border:1px solid var(--warn-border); color:#6b5300;}
+  .alert.err{background:var(--err-bg); border:1px solid var(--err-border); color:#7a1f1f;}
+  .alert.ok{background:var(--ok-bg); border:1px solid var(--ok-border); color:#1e4d20;}
+
+  ol{margin:4px 0 0 18px; padding:0; font-size:12.5px;}
+  ol li{margin-bottom:3px;}
+  ul.supplies{margin:3px 0 0 18px; padding:0; font-size:12.5px;}
+  ul.supplies li{margin-bottom:2px;}
+
+  table.doses{ width:100%; border-collapse:collapse; margin-top:6px; font-size:12px; }
+  table.doses th, table.doses td{ border:1px solid #999; padding:4px 6px; text-align:left; }
+  table.doses th{background:#eef2f6;}
+  table.doses input{ width:100%; border:none; font-size:12px; padding:2px; background:transparent; }
+  table.doses input:focus{background:#fffde7;}
+
+  .refnote{font-size:10.5px; color:#555; margin-top:3px;}
+  .footer-note{font-size:10px; color:#666; margin-top:14px; text-align:center;}
+  .override-toggle{font-size:11.5px; display:flex; align-items:center; gap:6px; margin-bottom:4px;}
+
+  .side-by-side{ display:flex; gap:12px; flex-wrap:wrap; }
+  .side-by-side fieldset{ min-width:260px; margin-bottom:12px; }
+
+  .pharm-prenote{
+    background:#fff8e6; border:1px solid #e0c26b; border-radius:8px;
+    padding:10px 16px; margin-bottom:16px; font-size:12.5px;
+  }
+  .pharm-prenote h3{ margin:0 0 6px; font-size:13px; color:#8a6300; }
+  .pharm-prenote ol{ margin:0 0 0 18px; }
+  .pharm-prenote ol ol{ margin-top:3px; list-style-type:lower-alpha; }
+  .pharm-prenote li{ margin-bottom:4px; }
+
+  .check-list{ list-style:none; margin:4px 0 0; padding:0; font-size:12.5px; }
+  .check-list li{ margin-bottom:6px; display:flex; align-items:flex-start; gap:8px; }
+  .check-list input[type=checkbox]{ margin-top:2px; }
+
+  @media print{
+    body{padding:0 6px; font-size:11px; max-width:100%;}
+    .toolbar, .no-print{display:none !important;}
+    fieldset{break-inside:avoid; border:1px solid #666; padding:6px 10px; margin-bottom:6px;}
+    legend{font-size:11px;}
+    h1{font-size:14px;}
+    h2{font-size:12px;}
+    .subtitle{margin-bottom:8px;}
+    .row{margin-bottom:3px; gap:8px;}
+    .field label{font-size:10px;}
+    .field input, .field select{padding:3px 5px; font-size:11px;}
+    .calc-box{padding:6px 10px; margin:4px 0;}
+    .calc-line{padding:2px 0;}
+    .calc-line .value input{border:none; background:transparent; font-size:11px;}
+    table.doses input{border:none; font-size:10.5px;}
+    ol, ul.supplies{font-size:11px;}
+    .refnote{font-size:9px;}
+    .footer-note{font-size:8.5px; margin-top:6px;}
+    .side-by-side{ gap:6px; }
+    .side-by-side fieldset{ min-width:0; margin-bottom:6px; }
+    .check-list{ font-size:11px; }
+    .check-list li{ margin-bottom:3px; }
+  }
+  @page{ size: portrait; margin: 0.35in; }
+</style>
+</head>
+<body>
+
+<h1>University of Washington Medical Center — Investigational Drug Services</h1>
+<h2>RG1122310 / DIVI &nbsp;·&nbsp; Darbepoetin IV or SQ Mixing Instructions</h2>
+<div class="subtitle">v.1.0 26 May 2022 RR/LF &nbsp;|&nbsp; Page 1 of 1 &nbsp;|&nbsp; Digital fillable version</div>
+
+<div class="toolbar no-print">
+  <button onclick="window.print()">🖨️ Print / Save PDF</button>
+  <button class="secondary" onclick="resetForm()">Reset Form</button>
+  <a class="reflink" id="refTableLink" href="#" target="_blank" rel="noopener">📋 View full DIVI Dosing Reference Table ↗</a>
+</div>
+
+<div class="pharm-prenote no-print">
+  <h3>Instructions for Pharmacist</h3>
+  <ol>
+    <li>Fill out mixing sheet below.</li>
+    <li>Transcribe faxed order in Epic using order code <strong>70000529</strong>.
+      <ol>
+        <li>Select "Research Association" in the order Options dropdown.</li>
+        <li>Reference mixing sheet for weight to input.</li>
+      </ol>
+    </li>
+    <li>Print 2 labels.</li>
+  </ol>
+</div>
+
+<fieldset>
+  <legend>Patient Information</legend>
+  <div class="row">
+    <div class="field"><label>Name</label><input type="text" id="ptName"></div>
+    <div class="field"><label>MRN</label><input type="text" id="ptUW"></div>
+    <div class="field"><label>Subject ID</label><input type="text" id="ptSubject"></div>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>Weight &amp; Dose Calculation</legend>
+
+  <div class="row">
+    <div class="field" style="max-width:340px;">
+      <label>Weight type used for this dose</label>
+      <select id="wtType">
+        <option value="birth">Birth weight (initial dose / before day 7)</option>
+        <option value="current">Current weight (subsequent doses)</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:170px;">
+      <label>Weight entered (kg)</label>
+      <input type="number" id="wtInput" step="0.001" min="0" placeholder="e.g. 1.345" oninput="calculate()">
+    </div>
+    <div class="field" style="max-width:170px;">
+      <label>Weight used for calc (kg)</label>
+      <input type="text" id="wtRounded" readonly style="background:#eee;">
+    </div>
+  </div>
+
+  <div id="rangeAlert" class="alert err">Weight is outside the reference table range (0.500 – 4.000 kg). Double-check weight or consult the reference table directly.</div>
+
+  <div class="row">
+    <div class="field" style="max-width:320px;">
+      <label>Vial concentration for SQ/IV</label>
+      <select id="concSelect" onchange="calculate(true)">
+        <option value="auto">Auto-select from weight (recommended)</option>
+        <option value="25">25 mcg/mL (0.5 – 1.26 kg)</option>
+        <option value="40">40 mcg/mL (1.27 – 2.01 kg)</option>
+        <option value="100">100 mcg/mL (2.02 – 4 kg)</option>
+      </select>
+      <span class="conc-badge pending" id="concBadgeDropdown">Vial: —</span>
+      <div class="hint" id="concAutoNote"></div>
+    </div>
+    <div class="field" style="max-width:200px;">
+      <label>Route</label>
+      <select id="routeSelect" onchange="calculate()">
+        <option value="SQ">SQ</option>
+        <option value="IV">IV</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="override-toggle no-print">
+    <input type="checkbox" id="overrideToggle" onchange="toggleOverride()">
+    <label for="overrideToggle">Enable manual override of calculated values (for independent double-check / verification)</label>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-line">
+      <div class="label">Darbepoetin 10 mcg/kg × weight = total dose <span class="boxtag">Box A</span></div>
+      <div class="value"><input type="text" id="boxA" readonly><span class="unit">mcg</span></div>
+    </div>
+    <div class="calc-line">
+      <div class="label">Dose volume of darbepoetin (from reference table) <span class="boxtag">Box B</span></div>
+      <div class="value"><input type="text" id="boxB" readonly><span class="unit">mL</span></div>
+    </div>
+    <div class="calc-line">
+      <div class="label">Rounded dose (mcg) — dose vol × vial concentration</div>
+      <div class="value"><input type="text" id="roundedDose" readonly><span class="unit">mcg</span></div>
+    </div>
+    <div class="calc-line">
+      <div class="label">Final volume = Box B + 0.05 mL overfill <span class="boxtag">Box C</span></div>
+      <div class="value"><input type="text" id="boxC" readonly><span class="unit">mL</span></div>
+    </div>
+  </div>
+
+  <div id="sqAlert" class="alert warn">⚠ Final volume (Box C) exceeds the SQ max dose volume of 0.55 mL (including overfill). Confirm route/order.</div>
+  <div id="okAlert" class="alert ok">✓ Final volume within SQ max dose volume (0.55 mL).</div>
+
+  <p class="refnote">Use birth weight for the initial dose; use current weight for subsequent doses. For intermediate weights not listed, always round down to the nearest listed weight. Table volumes do not include the 0.05 mL overfill needed to prime the line prior to administration. — <a class="reflink-inline" href="#" onclick="document.getElementById('refTableLink').click(); return false;" style="font-size:10.5px;">Full reference table ↗</a></p>
+</fieldset>
+
+<div class="side-by-side">
+  <fieldset style="flex:1;">
+    <legend>Supplies (Non-hazardous)</legend>
+    <ul class="supplies">
+      <li>Darbepoetin (Aranesp) vial <span class="conc-badge-inline" id="concBadgeSupplies">— mcg/mL</span> (as selected above)</li>
+      <li>Located in <strong>IDS Room SP1004, Refrigerator #4</strong></li>
+      <li>Appropriately sized syringes, needles</li>
+      <li>Syringe cap</li>
+    </ul>
+  </fieldset>
+
+  <fieldset style="flex:1;">
+    <legend>Prep Instructions</legend>
+    <ol>
+      <li>Obtain darbepoetin (Aranesp) vial — <span class="conc-badge-inline" id="concBadgeInstructions">— mcg/mL</span> vial — from IDS Room SP1004, Refrigerator #4.</li>
+      <li>Withdraw <strong><span id="instrVol">___</span> mL</strong> (Box C) into an appropriately sized syringe, including overfill.</li>
+      <li>Place a syringe cap on the syringe.</li>
+      <li>Do not shake. Protect from light (dispense in amber bag).</li>
+      <li>BUD: 24 hours refrigerated. Store doses in refrigerator until administration.</li>
+      <li>Save vials for IDS.</li>
+    </ol>
+  </fieldset>
+</div>
+
+<fieldset>
+  <legend>Dose Preparation Log</legend>
+  <table class="doses" id="doseLog">
+    <thead>
+      <tr><th style="width:25%;">Date</th><th style="width:15%;">Dose #</th><th style="width:30%;">Prepared By (Initials)</th><th style="width:30%;">Notes</th></tr>
+    </thead>
+    <tbody id="doseLogBody">
+      <tr>
+        <td><input type="text" id="logDate"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+      </tr>
+    </tbody>
+  </table>
+</fieldset>
+
+<fieldset>
+  <legend>Pharmacist Check</legend>
+  <ul class="check-list">
+    <li><input type="checkbox"> Apply "Refrigerate" sticker to the syringe/bag.</li>
+    <li><input type="checkbox"> Initial and retain 2nd patient label for IDS.</li>
+    <li><input type="checkbox"> Save all used/damaged vials and the completed mixing sheet for IDS.</li>
+  </ul>
+</fieldset>
+
+<div class="footer-note">This tool reproduces UWMC IDS form RG1122310 / DIVI v.1.0 (26 May 2022) for local double-check/documentation use — verify all calculated values against the printed reference table before use.</div>
+
+<script>
+// ---- Dosing reference table logic ----
+// Formula reproduced from the printed DIVI Darbepoetin reference tables (25/40/100 mcg/mL) and
+// verified against transcribed rows across all three concentration bands.
+//   totalDoseMcg   = round(weight_kg * 10, 1)              [10 mcg/kg]
+//   doseVolMl      = round(totalDoseMcg / concentration, 2) [round-half-up]
+//   roundedDoseMcg = round(doseVolMl * concentration, 1)
+// Concentration bands (dose-calc weight, kg):
+//   0.500 - 1.260 -> 25 mcg/mL
+//   1.270 - 2.010 -> 40 mcg/mL
+//   2.020 - 4.000 -> 100 mcg/mL
+
+const MIN_WT = 0.500;
+const MAX_WT = 4.000;
+const OVERFILL = 0.05;
+const SQ_MAX = 0.55;
+
+function roundHalfUp(num, decimals){
+  const factor = Math.pow(10, decimals);
+  return Math.round((num + Number.EPSILON) * factor) / factor;
+}
+
+function autoConcentration(weightKg){
+  if(weightKg >= 0.500 && weightKg <= 1.260) return 25;
+  if(weightKg >= 1.270 && weightKg <= 2.010) return 40;
+  if(weightKg >= 2.020 && weightKg <= 4.000) return 100;
+  return null;
+}
+
+function setConcBadges(conc){
+  const label = conc ? `${conc} mcg/mL` : '—';
+  ['concBadgeDropdown','concBadgeSupplies','concBadgeInstructions'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.textContent = id === 'concBadgeDropdown' ? `Vial: ${label}` : label;
+    el.classList.toggle('pending', !conc);
+  });
+}
+
+function toggleOverride(){
+  const on = document.getElementById('overrideToggle').checked;
+  ['boxB','roundedDose'].forEach(id=>{
+    document.getElementById(id).readOnly = !on;
+    document.getElementById(id).style.background = on ? '#fffde7' : '';
+  });
+}
+
+function calculate(concManuallyChanged){
+  const wtInput = parseFloat(document.getElementById('wtInput').value);
+  const rangeAlert = document.getElementById('rangeAlert');
+  const concSelect = document.getElementById('concSelect');
+  const concAutoNote = document.getElementById('concAutoNote');
+
+  if(isNaN(wtInput) || wtInput <= 0){
+    document.getElementById('wtRounded').value = '';
+    document.getElementById('boxA').value = '';
+    if(!document.getElementById('overrideToggle').checked){
+      document.getElementById('boxB').value = '';
+      document.getElementById('roundedDose').value = '';
+    }
+    document.getElementById('boxC').value = '';
+    document.getElementById('instrVol').textContent = '___';
+    rangeAlert.classList.remove('show');
+    document.getElementById('sqAlert').classList.remove('show');
+    document.getElementById('okAlert').classList.remove('show');
+    setConcBadges(null);
+    return;
+  }
+
+  const wtRounded = Math.floor(wtInput * 100) / 100;
+  document.getElementById('wtRounded').value = wtRounded.toFixed(3);
+
+  const outOfRange = wtRounded < MIN_WT || wtRounded > MAX_WT;
+  rangeAlert.classList.toggle('show', outOfRange);
+
+  const auto = autoConcentration(wtRounded);
+  let conc;
+  if(concSelect.value === 'auto'){
+    conc = auto;
+    concAutoNote.textContent = auto ? `Auto-selected based on weight.` : 'Weight out of range — cannot auto-select concentration.';
+  } else {
+    conc = parseFloat(concSelect.value);
+    concAutoNote.textContent = (auto && auto !== conc) ? `⚠ Differs from table-recommended ${auto} mcg/mL for this weight.` : '';
+  }
+  setConcBadges(conc);
+
+  if(!conc || outOfRange){
+    document.getElementById('boxA').value = '';
+    document.getElementById('boxC').value = '';
+    document.getElementById('instrVol').textContent = '___';
+    document.getElementById('sqAlert').classList.remove('show');
+    document.getElementById('okAlert').classList.remove('show');
+    return;
+  }
+
+  const totalDoseMcg = roundHalfUp(wtRounded * 10, 1);
+  document.getElementById('boxA').value = totalDoseMcg.toFixed(1);
+
+  const overrideOn = document.getElementById('overrideToggle').checked;
+
+  let doseVol, roundedDoseMcg;
+  if(overrideOn && document.getElementById('boxB').value !== ''){
+    doseVol = parseFloat(document.getElementById('boxB').value) || 0;
+  } else {
+    doseVol = roundHalfUp(totalDoseMcg / conc, 2);
+    document.getElementById('boxB').value = doseVol.toFixed(2);
+  }
+
+  if(overrideOn && document.getElementById('roundedDose').value !== ''){
+    roundedDoseMcg = parseFloat(document.getElementById('roundedDose').value) || 0;
+  } else {
+    roundedDoseMcg = roundHalfUp(doseVol * conc, 1);
+    document.getElementById('roundedDose').value = roundedDoseMcg.toFixed(1);
+  }
+
+  const finalVol = roundHalfUp(doseVol + OVERFILL, 2);
+  document.getElementById('boxC').value = finalVol.toFixed(2);
+  document.getElementById('instrVol').textContent = finalVol.toFixed(2);
+
+  const route = document.getElementById('routeSelect').value;
+  const sqAlert = document.getElementById('sqAlert');
+  const okAlert = document.getElementById('okAlert');
+  if(route === 'SQ'){
+    const exceeds = finalVol > SQ_MAX;
+    sqAlert.classList.toggle('show', exceeds);
+    okAlert.classList.toggle('show', !exceeds);
+  } else {
+    sqAlert.classList.remove('show');
+    okAlert.classList.remove('show');
+  }
+}
+
+['boxB','roundedDose'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=>{
+    if(document.getElementById('overrideToggle').checked){
+      const wtInput = parseFloat(document.getElementById('wtInput').value);
+      if(isNaN(wtInput)) return;
+      const doseVol = parseFloat(document.getElementById('boxB').value) || 0;
+      const finalVol = roundHalfUp(doseVol + OVERFILL, 2);
+      document.getElementById('boxC').value = finalVol.toFixed(2);
+      document.getElementById('instrVol').textContent = finalVol.toFixed(2);
+      const route = document.getElementById('routeSelect').value;
+      const sqAlert = document.getElementById('sqAlert');
+      const okAlert = document.getElementById('okAlert');
+      if(route === 'SQ'){
+        const exceeds = finalVol > SQ_MAX;
+        sqAlert.classList.toggle('show', exceeds);
+        okAlert.classList.toggle('show', !exceeds);
+      }
+    }
+  });
+});
+
+function resetForm(){
+  if(!confirm('Clear all entered values?')) return;
+  document.querySelectorAll('input[type=text], input[type=number]').forEach(el=>{
+    if(!['wtRounded','boxA','boxB','roundedDose','boxC'].includes(el.id)) el.value='';
+  });
+  document.getElementById('wtInput').value='';
+  document.getElementById('overrideToggle').checked = false;
+  toggleOverride();
+  document.getElementById('concSelect').value = 'auto';
+  document.getElementById('logDate').value = todayStr();
+  setConcBadges(null);
+  calculate();
+}
+
+function todayStr(){
+  const d = new Date();
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${mm}/${dd}/${d.getFullYear()}`;
+}
+
+// ---- Full reference table (generated from the verified formula) opened via hyperlink ----
+function buildRefTableHTML(){
+  const bands = [
+    {conc:25, min:0.500, max:1.260, title:'25 mcg/mL concentration'},
+    {conc:40, min:1.270, max:2.010, title:'40 mcg/mL concentration'},
+    {conc:100, min:2.020, max:4.000, title:'100 mcg/mL concentration'}
+  ];
+  let tables = '';
+  bands.forEach(b=>{
+    let rows = '';
+    for(let w = Math.round(b.min*1000); w <= Math.round(b.max*1000); w += 10){
+      const weight = w/1000;
+      const total = roundHalfUp(weight*10, 1);
+      const vol = roundHalfUp(total/b.conc, 2);
+      const rd = roundHalfUp(vol*b.conc, 1);
+      rows += `<tr><td>${weight.toFixed(3)}</td><td>${total.toFixed(1)}</td><td>${vol.toFixed(2)}</td><td>${rd.toFixed(1)}</td></tr>`;
+    }
+    tables += `
+      <h3>${b.title}</h3>
+      <table>
+        <thead><tr><th>Weight (kg)</th><th>Darbe 10 mcg/kg</th><th>Dose Vol (mL)</th><th>Rounded Dose (mcg)</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  });
+
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>DIVI Dosing Reference Table — Darbepoetin</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;font-size:12px;max-width:1100px;margin:0 auto;padding:20px;}
+    h1{font-size:16px;text-align:center;}
+    h3{font-size:13px;color:#0b5394;border-bottom:2px solid #0b5394;padding-bottom:2px;margin-top:26px;}
+    p.note{font-size:11px;color:#555;}
+    table{border-collapse:collapse;width:100%;margin-top:6px;}
+    th,td{border:1px solid #999;padding:3px 6px;text-align:left;font-size:11px;}
+    th{background:#eef2f6;position:sticky;top:0;}
+    @media print{ h3{break-before:page;} h3:first-of-type{break-before:avoid;} }
+  </style></head><body>
+  <h1>DIVI Dosing Reference Table : Darbepoetin</h1>
+  <p class="note">These dosing reference tables indicate the doses for a DIVI participant based on drug concentration and the participant's dose-calculation weight. The participant's birth weight is used for any doses before day 7, or until the baby returns to their birth weight. Dose-calc weights will always be indicated on the order forms. For intermediate weights not listed, always round down to the nearest listed weight. Volumes listed do not account for the 0.05 mL of overfill needed to prime the line prior to administration.<br><br>Generated from the verified dose formula (10 mcg/kg; dose volume rounded to nearest 0.01 mL, round-half-up). Cross-check against the official printed UWMC IDS reference table (RG1122310 / DIVI) if any discrepancy is suspected.</p>
+  ${tables}
+  </body></html>`;
+}
+
+const refBlob = new Blob([buildRefTableHTML()], {type:'text/html'});
+document.getElementById('refTableLink').href = URL.createObjectURL(refBlob);
+
+// ---- init ----
+toggleOverride();
+setConcBadges(null);
+document.getElementById('logDate').value = todayStr();
+calculate();
+</script>
+
+</body>
+</html>
