@@ -57,6 +57,7 @@
     padding:5px 7px; border:1px solid #999; border-radius:4px; font-size:13.5px;
   }
   .field .hint{font-size:10.5px; color:#666; margin-top:2px;}
+  .field .hint.warning{font-size:13px; color:#d32f2f; font-weight:700; background:#ffebee; padding:6px 10px; border-left:4px solid #d32f2f; border-radius:4px; margin-top:4px;}
 
   .conc-badge{
     display:inline-block; background:var(--accent); color:#fff; font-weight:700;
@@ -269,7 +270,7 @@
     <legend>Supplies (Non-hazardous)</legend>
     <ul class="supplies">
       <li>Darbepoetin (Aranesp) vial <span class="conc-badge-inline" id="concBadgeSupplies">— mcg/mL</span> (as selected above)</li>
-      <li>Located in <strong>IDS Room SP1004, Refrigerator #4</strong></li>
+      <li>Located in <strong>IDS Room SP1004, Refrigerator #4 & #5</strong></li>
       <li>Appropriately sized syringes, needles</li>
       <li>Syringe cap</li>
     </ul>
@@ -278,7 +279,7 @@
   <fieldset style="flex:1;">
     <legend>Prep Instructions</legend>
     <ol>
-      <li>Obtain darbepoetin (Aranesp) vial — <span class="conc-badge-inline" id="concBadgeInstructions">— mcg/mL</span> vial — from IDS Room SP1004, Refrigerator #4.</li>
+      <li>Obtain darbepoetin (Aranesp) vial — <span class="conc-badge-inline" id="concBadgeInstructions">— mcg/mL</span> vial — from IDS Room SP1004, Refrigerator #4 & #5.</li>
       <li>Withdraw <strong><span id="instrVol">___</span> mL</strong> (Box C) into an appropriately sized syringe, including overfill.</li>
       <li>Place a syringe cap on the syringe.</li>
       <li>Do not shake. Protect from light (dispense in amber bag).</li>
@@ -395,9 +396,16 @@ function calculate(concManuallyChanged){
   if(concSelect.value === 'auto'){
     conc = auto;
     concAutoNote.textContent = auto ? `Auto-selected based on weight.` : 'Weight out of range — cannot auto-select concentration.';
+    concAutoNote.className = 'hint';
   } else {
     conc = parseFloat(concSelect.value);
-    concAutoNote.textContent = (auto && auto !== conc) ? `⚠ Differs from table-recommended ${auto} mcg/mL for this weight.` : '';
+    if(auto && auto !== conc) {
+      concAutoNote.textContent = `⚠ Differs from table-recommended ${auto} mcg/mL for this weight.`;
+      concAutoNote.className = 'hint warning';
+    } else {
+      concAutoNote.textContent = '';
+      concAutoNote.className = 'hint';
+    }
   }
   setConcBadges(conc);
 
